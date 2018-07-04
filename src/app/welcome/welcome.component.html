@@ -1,3 +1,31 @@
-<p>
-  welcome works!
-</p>
+<div class="col-lg-12">
+  <form (ngSubmit)="onFormSubmit()" [formGroup]="algoForm" novalidate>
+    <div class="row m5-top">
+      <div class="col-lg-4">
+        <div class="form-group text-left">
+          <input type="file" id="myFile" formControlName="fileUpload">
+        </div>
+      </div>
+      <div class="col-lg-8">
+        <div class="pull-left m2-left">
+          <div class="form-group text-center">
+            <button type="button" (click)="onRandomForest()" class="btn amado-btn">Random Forest</button>
+          </div>
+        </div>
+        <div class="pull-left m2-left">
+          <div class="form-group text-center">
+            <button type="button" (click)="onDescisionTree()" class="btn amado-btn">Descision Tree</button>
+          </div>
+        </div>
+        <div class="pull-left m2-left">
+          <div class="form-group text-center">
+            <button type="button" (click)="onKnn()" class="btn amado-btn">Kth Nearest Neighbour</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+<div class="col-12">
+  <app-algo-result [algo]="algo"></app-algo-result>
+</div>

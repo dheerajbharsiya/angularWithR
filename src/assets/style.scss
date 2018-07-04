@@ -371,7 +371,7 @@ img {
 
 .amado-btn {
     display: inline-block;
-    min-width: 160px;
+    min-width: 120px;
     height: 55px;
     color: $white-color;
     border: none;
@@ -1671,5 +1671,12 @@ img {
 
 h2, label {
     color: white;
+}
+
+.m5-top {
+    margin-top: 25px;
+}
+.m2-left {
+    margin-left: 16px;
 }
 /* ##### The End ##### */
