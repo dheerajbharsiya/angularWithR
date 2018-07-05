@@ -58,7 +58,19 @@ export class WelcomeComponent implements OnInit {
         this.algo.name = "Descisio Tree";
       }));
     }
+  }
 
+  onKnn() {
+    if (this.algoForm.valid) {
+      //let myParams = new URLSearchParams();
+      let documentName = (this.algoForm.value.fileUpload.replace(/^.*\\/, ""));
+      // this.router.navigate(['/welcome']);
+      this.http.get('http://localhost:8000/knnProccess/?docName=' + documentName).subscribe((resp => {
+        console.log(resp);
+        this.algo.accuracy = JSON.parse((resp as any)._body)[0];
+        this.algo.name = "K Nearest Neighbour";
+      }));
+    }
   }
 
 }
