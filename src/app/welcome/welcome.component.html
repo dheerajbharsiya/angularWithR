@@ -4,6 +4,9 @@
       <div class="col-lg-4">
         <div class="form-group text-left">
           <input type="file" id="myFile" formControlName="fileUpload">
+          <div *ngIf="!algoForm.valid && submitted">
+            <div class="help-block">Please select a File</div>
+          </div>
         </div>
       </div>
       <div class="col-lg-8">
@@ -19,7 +22,7 @@
         </div>
         <div class="pull-left m2-left">
           <div class="form-group text-center">
-            <button type="button" (click)="testHigh()" class="btn amado-btn">Kth Nearest Neighbour</button>
+            <button type="button" (click)="onKnn()" class="btn amado-btn">Kth Nearest Neighbour</button>
           </div>
         </div>
       </div>
@@ -29,6 +32,13 @@
 <div class="col-12">
   <app-algo-result [algo]="algo"></app-algo-result>
 </div>
-<div class="col-12"> 
-  <ng-template #dynamic></ng-template>
+<div class="col-lg-12">
+  <div class="row">
+    <div class="col-6"> 
+      <ng-template #dynamicSource></ng-template>
+    </div>
+    <div class="col-6"> 
+      <ng-template #dynamicPredicted></ng-template>
+    </div>    
+  </div>
 </div>

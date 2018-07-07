@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-graph-container',
@@ -6,10 +7,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./graph-container.component.scss']
 })
 export class GraphContainerComponent implements OnInit {
-
-  constructor() { }
+  @Input() sourceUrl: any;
+  @Input() typeOfGraph: any;
+  constructor(private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
+    this.sourceUrl =  this.sanitizer.bypassSecurityTrustResourceUrl(this.sourceUrl);
   }
 
 }

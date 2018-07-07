@@ -14,12 +14,16 @@ import { GraphContainerComponent } from '../graph-container/graph-container.comp
 export class WelcomeComponent implements OnInit {
 
   constructor(private router: Router, private http: Http, private factoryResolver: ComponentFactoryResolver) { }
-  @ViewChild('dynamic', { 
-    read: ViewContainerRef 
-  }) viewContainerRef: ViewContainerRef
+  @ViewChild('dynamicSource', {
+    read: ViewContainerRef
+  }) viewContainerRefSoruce: ViewContainerRef
+  @ViewChild('dynamicPredicted', {
+    read: ViewContainerRef
+  }) viewContainerRefPredicted: ViewContainerRef
   algoForm: FormGroup;
   graphLocation: string;
   currentUrl: string = "";
+  submitted: boolean;
   public algo: { accuracy: number, name: string } = {
     accuracy: 0,
     name: ''
@@ -47,9 +51,11 @@ export class WelcomeComponent implements OnInit {
       //let myParams = new URLSearchParams();
       let documentName = (this.algoForm.value.fileUpload.replace(/^.*\\/, ""));
       // this.router.navigate(['/welcome']);
-      this.http.get('http://localhost:8000/?docName=' + documentName).subscribe((resp => {
+      this.http.get('http://localhost:8000/randomForest/accu/').subscribe((resp => {
+        console.log(resp);
         this.algo.accuracy = JSON.parse((resp as any)._body)[0];
         this.algo.name = "Random Forest";
+        this.addGraphComponent("http://localhost:8000/randomForest/test/", "http://localhost:8000/randomForest/predict/");
       }));
     }
   }
@@ -59,13 +65,15 @@ export class WelcomeComponent implements OnInit {
       //let myParams = new URLSearchParams();
       let documentName = (this.algoForm.value.fileUpload.replace(/^.*\\/, ""));
       // this.router.navigate(['/welcome']);
-      this.http.get('http://localhost:8000/descisionTree/?docName=' + documentName).subscribe((resp => {
+      //      this.http.get('http://localhost:8000/descisionTree/accu?docName=' + documentName).subscribe((resp => {
+      this.http.get('http://localhost:8000/descisionTree/accu/').subscribe((resp => {
         console.log(resp);
-        // this.algo.accuracy = JSON.parse((resp as any)._body)[0];
-        // this.algo.name = "Descisio Tree";
-       // this.addGraphComponent();
+        this.algo.accuracy = JSON.parse((resp as any)._body)[0];
+        this.algo.name = "Descisio Tree";
+        this.addGraphComponent("http://localhost:8000/descisionTree/test/", "http://localhost:8000/descisionTree/predict/");
       }));
     }
+    this.submitted = true;
   }
 
   onKnn() {
@@ -73,10 +81,11 @@ export class WelcomeComponent implements OnInit {
       //let myParams = new URLSearchParams();
       let documentName = (this.algoForm.value.fileUpload.replace(/^.*\\/, ""));
       // this.router.navigate(['/welcome']);
-      this.http.get('http://localhost:8000/knnProccess/?docName=' + documentName).subscribe((resp => {
+      this.http.get('http://localhost:8000/knnProccess/accu/').subscribe((resp => {
         console.log(resp);
         this.algo.accuracy = JSON.parse((resp as any)._body)[0];
-        this.algo.name = "K Nearest Neighbour";
+        this.algo.name = "Descisio Tree";
+        this.addGraphComponent("http://localhost:8000/knnProccess/test/", "http://localhost:8000/knnProccess/predict/");
       }));
     }
   }
@@ -91,15 +100,31 @@ export class WelcomeComponent implements OnInit {
         //this.graphLocationCreater("http://localhost:8000/testGraph/");        // this.algo.accuracy = JSON.parse((resp as any)._body)[0];
         // this.algo.name = "K Nearest Neighbour";
         //this.currentUrl = "http://localhost:8000/testGraph/";
-      this.addGraphComponent();
+        // this.addGraphComponent();
       }));
     }
   }
 
-  addGraphComponent() {
+  addGraphComponent(urlSource, urlPredicted) {
+    /* source data graph */
+    if (this.viewContainerRefPredicted) {
+      this.viewContainerRefPredicted.clear();
+    }
+    if (this.viewContainerRefSoruce) {
+      this.viewContainerRefSoruce.clear();
+    }
     const factory = this.factoryResolver.resolveComponentFactory(GraphContainerComponent);
-    const component = factory.create(this.viewContainerRef.parentInjector)
-    this.viewContainerRef.insert(component.hostView)
+    const component = factory.create(this.viewContainerRefSoruce.parentInjector);
+    this.viewContainerRefSoruce.insert(component.hostView);
+    component.instance.sourceUrl = urlSource;
+    component.instance.typeOfGraph = "Test Data";
+
+    /* predicted data graph */
+    const factoryPred = this.factoryResolver.resolveComponentFactory(GraphContainerComponent);
+    const componentPred = factoryPred.create(this.viewContainerRefPredicted.parentInjector);
+    this.viewContainerRefPredicted.insert(componentPred.hostView);
+    componentPred.instance.sourceUrl = urlPredicted;
+    componentPred.instance.typeOfGraph = "Predicted Data";
   }
 
   // graphLocationCreater(url) {
