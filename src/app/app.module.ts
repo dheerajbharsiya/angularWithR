@@ -6,9 +6,9 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from '../app-routing.module';
 import { WelcomeComponent } from './welcome/welcome.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import {HttpModule} from '@angular/http';
+import { HttpModule } from '@angular/http';
 import { AlgoResultComponent } from './algo-result/algo-result.component';
-import { TestCompComponent } from './test-comp/test-comp.component';
+import { GraphContainerComponent } from './graph-container/graph-container.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import { TestCompComponent } from './test-comp/test-comp.component';
     HomeComponent,
     WelcomeComponent,
     AlgoResultComponent,
-    TestCompComponent
+    GraphContainerComponent
   ],
   imports: [
     BrowserModule,
@@ -27,6 +27,7 @@ import { TestCompComponent } from './test-comp/test-comp.component';
     HttpModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [GraphContainerComponent]
 })
 export class AppModule { }
